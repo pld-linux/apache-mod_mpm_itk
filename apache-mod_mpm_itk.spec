@@ -26,7 +26,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 apache2-mpm-itk (just mpm-itk for short) is an MPM (Multi-Processing
 Module) for the Apache web server. mpm-itk allows you to run each of
-your vhost under a separate uid and gid—in short, the scripts and
+your vhost under a separate uid and gid - in short, the scripts and
 configuration files for one vhost no longer have to be readable for
 all the other vhosts.
 
@@ -44,16 +44,15 @@ extra fork per request.
 %build
 %configure \
 	--with-apxs=%{apxs}
-
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_pkglibdir},%{_sysconfdir}/conf.d}
 
-install .libs/mpm_itk.so $RPM_BUILD_ROOT%{_pkglibdir}
-
-echo "LoadModule mpm_itk_module	modules/mod_mpm_itk.so" > $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
+install -p .libs/mpm_itk.so $RPM_BUILD_ROOT%{_pkglibdir}
+echo "LoadModule mpm_itk_module	modules/mod_mpm_itk.so" \
+	> $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
