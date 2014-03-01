@@ -1,7 +1,7 @@
 %define		mod_name	mpm_itk
 %define		apxs		/usr/sbin/apxs
 %define		ver	2.4.7
-%define		subver	01
+%define		subver	02
 Summary:	mod_mpm_itk - allows you to run each of your vhost under a separate uid and gid
 Name:		apache-mod_mpm_itk
 Version:	%{ver}.%{subver}
@@ -9,7 +9,7 @@ Release:	1
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://mpm-itk.sesse.net/mpm-itk-%{ver}-%{subver}.tar.gz
-# Source0-md5:	3d7a14aef93bb5c1eb1c01081585c4bc
+# Source0-md5:	241eddeef8d3931c6699a51d5d2169a7
 URL:		http://mpm-itk.sesse.net/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.4.7
