@@ -51,7 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_pkglibdir},%{_sysconfdir}/conf.d}
 
 install -p .libs/mpm_itk.so $RPM_BUILD_ROOT%{_pkglibdir}
-echo "LoadModule mpm_itk_module	modules/mod_mpm_itk.so" \
+echo "LoadModule mpm_itk_module	modules/mpm_itk.so" \
 	> $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
 
 %clean
