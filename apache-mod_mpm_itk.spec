@@ -5,11 +5,12 @@
 Summary:	mod_mpm_itk - allows you to run each of your vhost under a separate uid and gid
 Name:		apache-mod_mpm_itk
 Version:	%{ver}.%{subver}
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://mpm-itk.sesse.net/mpm-itk-%{ver}-%{subver}.tar.gz
 # Source0-md5:	241eddeef8d3931c6699a51d5d2169a7
+Source1:	%{name}.conf
 URL:		http://mpm-itk.sesse.net/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.4.7
@@ -51,8 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_pkglibdir},%{_sysconfdir}/conf.d}
 
 install -p .libs/mpm_itk.so $RPM_BUILD_ROOT%{_pkglibdir}
-echo "LoadModule mpm_itk_module	modules/mpm_itk.so" \
-	> $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
