@@ -5,12 +5,13 @@
 Summary:	mod_mpm_itk - allows you to run each of your vhost under a separate uid and gid
 Name:		apache-mod_mpm_itk
 Version:	%{ver}.%{subver}
-Release:	2
+Release:	3
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://mpm-itk.sesse.net/mpm-itk-%{ver}-%{subver}.tar.gz
 # Source0-md5:	241eddeef8d3931c6699a51d5d2169a7
 Source1:	%{name}.conf
+Source2:	%{name}-php.conf
 URL:		http://mpm-itk.sesse.net/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.4.7
@@ -19,6 +20,7 @@ BuildRequires:	apr-util-devel >= 1:1.0
 BuildRequires:	libcap-devel
 Requires:	apache(modules-api) = %{apache_modules_api}
 Requires:	apache-base >= 2.4.7
+Requires:	php-dirs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
@@ -39,6 +41,8 @@ you'd have to decide for yourself if that's worth it or not. You will
 also take an additional performance hit over prefork, since there's an
 extra fork per request.
 
+%define	no_install_post_check_tmpfiles	1
+
 %prep
 %setup -q -n mpm-itk-%{ver}-%{subver}
 
@@ -50,9 +54,11 @@ extra fork per request.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_pkglibdir},%{_sysconfdir}/conf.d}
+install -d $RPM_BUILD_ROOT/var/run/php/ug
 
 install -p .libs/mpm_itk.so $RPM_BUILD_ROOT%{_pkglibdir}
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/99_mod_%{mod_name}-php.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -69,4 +75,8 @@ fi
 %defattr(644,root,root,755)
 %doc CHANGES README
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}-php.conf
 %attr(755,root,root) %{_pkglibdir}/mpm_itk.so
+# multiple uid/gids in use
+%dir %attr(1773,root,root) /var/run/php/ug
+
