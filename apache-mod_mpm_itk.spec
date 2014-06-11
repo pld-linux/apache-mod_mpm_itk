@@ -5,7 +5,7 @@
 Summary:	mod_mpm_itk - allows you to run each of your vhost under a separate uid and gid
 Name:		apache-mod_mpm_itk
 Version:	%{ver}.%{subver}
-Release:	4
+Release:	5
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://mpm-itk.sesse.net/mpm-itk-%{ver}-%{subver}.tar.gz
@@ -58,7 +58,7 @@ install -d $RPM_BUILD_ROOT{/var/run/php/ug,%{systemdtmpfilesdir}}
 install -p .libs/mpm_itk.so $RPM_BUILD_ROOT%{_pkglibdir}
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/10_mod_%{mod_name}.conf
 cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/99_mod_%{mod_name}-php.conf
-cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/php-itk-dirs.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -77,7 +77,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}-php.conf
 %attr(755,root,root) %{_pkglibdir}/mpm_itk.so
-%{systemdtmpfilesdir}/%{name}.conf
+%{systemdtmpfilesdir}/php-itk-dirs.conf
 # multiple uid/gids in use
 %dir %attr(1773,root,root) /var/run/php/ug
 
